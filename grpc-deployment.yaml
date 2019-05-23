@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: grpc-server
+  name: grpc-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-server
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+      - image: yuuyamad/go-grpc-sample-server:latest
+        name: go-grpc-sample-server
+        envFrom:
+        - configMapRef:
+            name: grpc-server
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grpc-server
+              key: password
+        resources: {}
+status: {}
